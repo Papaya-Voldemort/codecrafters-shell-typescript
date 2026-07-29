@@ -8,10 +8,7 @@ const rl = createInterface({
 
 const running = true;
 
-while (running) {
+rl.on("line", (command: string) => {
+  console.log(`${command}: command not found`);
   rl.prompt();
-
-  rl.on("line", (command: string) => {
-    console.log(`${command}: command not found`);
-  });
-}
+});
