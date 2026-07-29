@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "types": ["node"],
+
     // Enable latest features
     "lib": ["ESNext", "DOM"],
     "target": "ESNext",
@@ -22,6 +24,6 @@
     // Some stricter flags (disabled by default)
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "noPropertyAccessFromIndexSignature": false
-  }
+    "noPropertyAccessFromIndexSignature": false,
+  },
 }
