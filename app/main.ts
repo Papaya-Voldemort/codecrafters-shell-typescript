@@ -1,4 +1,5 @@
 import { createInterface } from "readline";
+import which from "which";
 
 const rl = createInterface({
   input: process.stdin,
@@ -31,7 +32,12 @@ rl.on("line", (fullCommand: string) => {
     if (builtins.has(target)) {
       console.log(`${target} is a shell builtin`);
     } else {
-      console.log(`${target}: not found`);
+      const result = which.sync(target, { nothrow: true });
+      if (result) {
+        console.log(`${target} is ${result}`);
+      } else {
+        console.log(`${target}: not found`);
+      }
     }
     rl.prompt();
     return;
