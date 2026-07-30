@@ -1,6 +1,7 @@
 import { createInterface } from "readline";
 import which from "which";
 import { spawn } from "child_process";
+import { dir } from "console";
 
 const rl = createInterface({
   input: process.stdin,
@@ -58,7 +59,8 @@ rl.on("line", (fullCommand: string) => {
   }
 
   if (command === "cd") {
-    const directory = target ?? process.env.HOME;
+    const directory =
+      target === "~" || target === undefined ? process.env.HOME : target;
 
     if (!directory) {
       console.log("cd: HOME not set");
