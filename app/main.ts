@@ -1,7 +1,7 @@
 import { createInterface } from "readline";
 import which from "which";
 import { spawn } from "child_process";
-import { dir } from "console";
+import { parse } from "shell-quote";
 
 const rl = createInterface({
   input: process.stdin,
@@ -15,7 +15,7 @@ rl.prompt();
 
 rl.on("line", (fullCommand: string) => {
   const [command, ...args] = fullCommand.trim().split(/\s+/);
-  const [target] = args;
+  const [target] = parse(args) as string[];
 
   if (command === "exit") {
     rl.close();
