@@ -14,8 +14,9 @@ const builtins = new Set(["echo", "exit", "type", "pwd", "cd"]);
 rl.prompt();
 
 rl.on("line", (fullCommand: string) => {
-  const [command, ...args] = fullCommand.trim().split(/\s+/);
-  const [target] = parse(args) as string[];
+  const parsed = parse(fullCommand);
+  const [command, ...args] = parsed as string[];
+  const [target] = args;
 
   if (command === "exit") {
     rl.close();
