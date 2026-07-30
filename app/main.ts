@@ -46,6 +46,7 @@ rl.on("line", (fullCommand: string) => {
 
   if (command === "pwd") {
     console.log(process.cwd());
+    rl.prompt();
   }
 
   const executablePath = which.sync(command, { nothrow: true });
