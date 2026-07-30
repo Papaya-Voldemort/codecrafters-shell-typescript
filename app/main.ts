@@ -8,7 +8,7 @@ const rl = createInterface({
   prompt: "$ ",
 });
 
-const builtins = new Set(["echo", "exit", "type"]);
+const builtins = new Set(["echo", "exit", "type", "pwd"]);
 
 rl.prompt();
 
@@ -42,6 +42,10 @@ rl.on("line", (fullCommand: string) => {
     }
     rl.prompt();
     return;
+  }
+
+  if (command === "pwd") {
+    console.log(process.cwd());
   }
 
   const executablePath = which.sync(command, { nothrow: true });
