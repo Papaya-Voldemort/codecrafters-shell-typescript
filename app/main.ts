@@ -1,5 +1,6 @@
 import { createInterface } from "readline";
 import which from "which";
+import { spawn } from "child_process";
 
 const rl = createInterface({
   input: process.stdin,
@@ -43,6 +44,16 @@ rl.on("line", (fullCommand: string) => {
     return;
   }
 
-  console.log(`${command}: command not found`);
-  rl.prompt();
+  const executablePath = which.sync(command, { nothrow: true });
+  if (!executablePath) {
+    console.log(`${command}: command not found`);
+    rl.prompt();
+    return;
+  }
+  const child = spawn(executablePath, args, {
+    stdio: "inherit",
+  });
+  child.on("close", () => {
+    rl.prompt();
+  });
 });
