@@ -45,14 +45,18 @@ rl.on("line", (fullCommand: string) => {
   }
 
   const executablePath = which.sync(command, { nothrow: true });
+
   if (!executablePath) {
     console.log(`${command}: command not found`);
     rl.prompt();
     return;
   }
+
   const child = spawn(executablePath, args, {
     stdio: "inherit",
+    argv0: command,
   });
+
   child.on("close", () => {
     rl.prompt();
   });
