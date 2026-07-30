@@ -8,7 +8,7 @@ const rl = createInterface({
   prompt: "$ ",
 });
 
-const builtins = new Set(["echo", "exit", "type", "pwd"]);
+const builtins = new Set(["echo", "exit", "type", "pwd", "cd"]);
 
 rl.prompt();
 
@@ -28,24 +28,50 @@ rl.on("line", (fullCommand: string) => {
   }
 
   if (command === "type") {
-    // TODO: Handle undifined target
-    // TODO: Handle multiple args
-    if (builtins.has(target)) {
-      console.log(`${target} is a shell builtin`);
-    } else {
+    if (target === undefined) {
+      rl.prompt();
+      return;
+    }
+    for (const target of args) {
+      if (builtins.has(target)) {
+        console.log(`${target} is a shell builtin`);
+        continue;
+      }
+
       const result = which.sync(target, { nothrow: true });
+
       if (result) {
         console.log(`${target} is ${result}`);
       } else {
         console.log(`${target}: not found`);
       }
     }
+
     rl.prompt();
     return;
   }
 
   if (command === "pwd") {
     console.log(process.cwd());
+    rl.prompt();
+    return;
+  }
+
+  if (command === "cd") {
+    const directory = target ?? process.env.HOME;
+
+    if (!directory) {
+      console.log("cd: HOME not set");
+      rl.prompt();
+      return;
+    }
+
+    try {
+      process.chdir(directory);
+    } catch {
+      console.log(`cd: ${directory}: No such file or directory`);
+    }
+
     rl.prompt();
     return;
   }
